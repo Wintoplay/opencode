@@ -2,7 +2,6 @@ import { createMemo, For, lazy, Show, Suspense, type JSX } from "solid-js"
 import { createStore } from "solid-js/store"
 import { Tabs } from "@opencode/ui/tabs"
 import { Icon } from "@opencode/ui/icon"
-import { Button } from "@opencode/ui/button"
 import {
   Panel,
   type PanelSidebar,
@@ -146,39 +145,42 @@ export function MobileViewTabs(props: {
               fallback={
                 <div
                   data-slot="session-mobile-view-options"
-                  class="flex flex-col overflow-hidden rounded-lg border border-v2-border-border-base bg-v2-background-bg-layer-02 divide-y divide-v2-border-border-base"
+                  class="flex flex-col gap-0.5 rounded-[6px] bg-v2-background-bg-base p-0.5 shadow-[var(--v2-elevation-raised)] [[data-color-scheme=dark]_&]:bg-v2-background-bg-layer-01"
                 >
                   <For each={props.views.menu().filter((entry) => entry.mobile.kind === "menu")}>
                     {(entry) => (
-                      <Button
-                        variant="ghost"
-                        class="w-full !h-10 !justify-start !gap-2.5 !rounded-none !px-3 !font-[440] focus-visible:!outline-offset-[-2px]"
+                      <button
+                        type="button"
+                        class="flex min-h-11 w-full items-center gap-2 rounded-[4px] py-1 ps-3 pe-2 text-start text-[13px] font-[440] leading-[var(--line-height-base)] text-v2-text-text-base hover:bg-[var(--v2-overlay-simple-overlay-hover)] focus-visible:outline-none focus-visible:bg-[var(--v2-overlay-simple-overlay-hover)] aria-pressed:bg-[var(--v2-overlay-simple-overlay-pressed)]"
                         aria-pressed={props.current === entry.key}
-                        data-state={props.current === entry.key ? "pressed" : undefined}
                         onClick={() => {
                           props.onSelect(entry.key)
                           setStore("open", false)
                         }}
                       >
-                        <Show when={entry.mobile.icon}>{(icon) => <Icon name={icon()} />}</Show>
-                        {entry.mobile.title}
-                        <Show when={props.current === entry.key}>
-                          <Icon name="check" class="ms-auto" />
+                        <Show when={entry.mobile.icon}>
+                          {(icon) => <Icon name={icon()} class="shrink-0 text-v2-icon-icon-muted" />}
                         </Show>
-                      </Button>
+                        <span class="min-w-0 flex-1 truncate">{entry.mobile.title}</span>
+                        <Show when={props.current === entry.key}>
+                          <Icon name="check" class="ms-1 shrink-0 text-v2-icon-icon-muted" />
+                        </Show>
+                      </button>
                     )}
                   </For>
                   <For each={props.views.menu().filter((entry) => entry.mobile.kind === "drawer")}>
                     {(entry) => (
-                      <Button
-                        variant="ghost"
-                        class="w-full !h-10 !justify-start !gap-2.5 !rounded-none !px-3 !font-[440] focus-visible:!outline-offset-[-2px]"
+                      <button
+                        type="button"
+                        class="flex min-h-11 w-full items-center gap-2 rounded-[4px] py-1 ps-3 pe-2 text-start text-[13px] font-[440] leading-[var(--line-height-base)] text-v2-text-text-base hover:bg-[var(--v2-overlay-simple-overlay-hover)] focus-visible:outline-none focus-visible:bg-[var(--v2-overlay-simple-overlay-hover)]"
                         onClick={() => setStore("drawer", entry.key)}
                       >
-                        <Show when={entry.mobile.icon}>{(icon) => <Icon name={icon()} />}</Show>
-                        {entry.mobile.title}
-                        <Icon name="chevron-right" class="ms-auto" />
-                      </Button>
+                        <Show when={entry.mobile.icon}>
+                          {(icon) => <Icon name={icon()} class="shrink-0 text-v2-icon-icon-muted" />}
+                        </Show>
+                        <span class="min-w-0 flex-1 truncate">{entry.mobile.title}</span>
+                        <Icon name="chevron-right" class="ms-1 shrink-0 text-v2-icon-icon-muted" />
+                      </button>
                     )}
                   </For>
                 </div>
